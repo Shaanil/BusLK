@@ -51,7 +51,8 @@ export default function SearchTrips() {
                 .from('trips')
                 .select('*')
                 .eq('start_location', start)
-                .eq('end_location', end);
+                .eq('end_location', end)
+            .order('departure_time', { ascending: true });
 
             if (error) throw error;
 
