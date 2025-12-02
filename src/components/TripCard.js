@@ -1,13 +1,28 @@
 export default function TripCard({ trip, onSelect }) {
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onSelect(trip);
+        }
+    };
+
     return (
-        <div className="card" onClick={() => onSelect(trip)} style={{ cursor: 'pointer' }}>
+        <div
+            className="card"
+            onClick={() => onSelect(trip)}
+            onKeyDown={handleKeyDown}
+            tabIndex="0"
+            role="button"
+            aria-label={`View details for trip from ${trip.startLocation} to ${trip.endLocation}`}
+            style={{ cursor: 'pointer' }}
+        >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                 <h3 style={{ fontSize: '1.25rem', color: 'var(--primary-color)' }}>
                     {trip.startLocation} <span style={{ color: 'var(--text-secondary)', margin: '0 0.5rem' }}>→</span> {trip.endLocation}
                 </h3>
                 <span style={{
                     backgroundColor: trip.highway ? '#dcfce7' : '#f1f5f9',
-                    color: trip.highway ? '#166534' : '#475569',
+                    color: trip.highway ? '#166534' : '#334155',
                     padding: '0.25rem 0.75rem',
                     borderRadius: '9999px',
                     fontSize: '0.875rem',
@@ -32,9 +47,9 @@ export default function TripCard({ trip, onSelect }) {
                 <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
                     Bus Number: <span style={{ color: 'var(--text-primary)', fontWeight: '500' }}>{trip.busNumber}</span>
                 </p>
-                <button className="btn btn-primary" style={{ fontSize: '0.875rem', padding: '0.25rem 0.75rem' }}>
+                <span className="btn btn-primary" style={{ fontSize: '0.875rem', padding: '0.25rem 0.75rem' }}>
                     View Details
-                </button>
+                </span>
             </div>
         </div>
     );

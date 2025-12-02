@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { supabase } from "../supabaseClient";
 import TripCard from "./TripCard";
-import TripDetailsModal from "./TripDetailsModal";
+const TripDetailsModal = lazy(() => import("./TripDetailsModal"));
 
 export default function SearchTrips() {
     const [start, setStart] = useState("");
@@ -49,10 +49,10 @@ export default function SearchTrips() {
         try {
             const { data, error } = await supabase
                 .from('trips')
-                .select('*')
+                .select('id, start_location, end_location, bus_number, departure_time, arrival_time, highway, route_number, distance, bus_name, service_type, contact_number, price, stops, notes')
                 .eq('start_location', start)
                 .eq('end_location', end)
-            .order('departure_time', { ascending: true });
+                .order('departure_time', { ascending: true });
 
             if (error) throw error;
 
@@ -91,8 +91,10 @@ export default function SearchTrips() {
                 <form onSubmit={handleSearch} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                         <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: '500' }}>From</label>
+                            <label htmlFor="start-location" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: '500' }}>From</label>
                             <select
+                                id="start-location"
+                                autoComplete="off"
                                 className="input-field"
                                 value={start}
                                 onChange={(e) => setStart(e.target.value)}
@@ -105,8 +107,10 @@ export default function SearchTrips() {
                             </select>
                         </div>
                         <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: '500' }}>To</label>
+                            <label htmlFor="end-location" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: '500' }}>To</label>
                             <select
+                                id="end-location"
+                                autoComplete="off"
                                 className="input-field"
                                 value={end}
                                 onChange={(e) => setEnd(e.target.value)}
@@ -160,10 +164,12 @@ export default function SearchTrips() {
             </div>
 
             {selectedTrip && (
-                <TripDetailsModal
-                    trip={selectedTrip}
-                    onClose={() => setSelectedTrip(null)}
-                />
+                <Suspense fallback={<div style={{ textAlign: 'center', padding: '1rem' }}>Loading details...</div>}>
+                    <TripDetailsModal
+                        trip={selectedTrip}
+                        onClose={() => setSelectedTrip(null)}
+                    />
+                </Suspense>
             )}
         </div>
     );

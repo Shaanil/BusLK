@@ -4,11 +4,11 @@ export default function TripDetailsModal({ trip, onClose }) {
     if (!trip) return null;
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="modal-title">
             <div className="modal-content" onClick={e => e.stopPropagation()}>
                 <div className="modal-header">
-                    <h2>Trip Details</h2>
-                    <button className="close-btn" onClick={onClose}>&times;</button>
+                    <h2 id="modal-title">Trip Details</h2>
+                    <button className="close-btn" onClick={onClose} aria-label="Close modal">&times;</button>
                 </div>
 
                 <div className="modal-body">
