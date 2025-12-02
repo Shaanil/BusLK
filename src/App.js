@@ -14,6 +14,10 @@ function App() {
                 <a href="/privacy.html" style={{ color: 'var(--text-secondary)', textDecoration: 'none', margin: '0 0.5rem' }}>Privacy Policy</a> |
                 <a href="/terms.html" style={{ color: 'var(--text-secondary)', textDecoration: 'none', margin: '0 0.5rem' }}>Terms of Service</a> |
                 <a href="/about.html" style={{ color: 'var(--text-secondary)', textDecoration: 'none', margin: '0 0.5rem' }}>About Us</a>
+                {/* Add the line break here */}
+                <br />
+
+                © 2025 Cinnamonhouse Villa. All rights reserved.
             </footer>
         </div>
     );
