@@ -49,7 +49,7 @@ export default function SearchTrips() {
         try {
             const { data, error } = await supabase
                 .from('trips')
-                .select('id, start_location, end_location, bus_number, departure_time, arrival_time, highway, route_number, distance, bus_name, service_type, contact_number, price, stops, notes')
+                .select('*')
                 .eq('start_location', start)
                 .eq('end_location', end)
                 .order('departure_time', { ascending: true });
