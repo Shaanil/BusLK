@@ -12,12 +12,14 @@ function App() {
             </div>
             <footer style={{ textAlign: 'center', margin: '1rem 0', padding: '1rem' }}>
                 <a href="/privacy.html" style={{ color: 'var(--text-secondary)', textDecoration: 'none', margin: '0 0.5rem' }}>Privacy Policy</a> |
-                <a href="/terms.html" style={{ color: 'var(--text-secondary)', textDecoration: 'none', margin: '0 0.5rem' }}>Terms of Service</a> |
-                <a href="/about.html" style={{ color: 'var(--text-secondary)', textDecoration: 'none', margin: '0 0.5rem' }}>About Us</a>
+                <a href="/terms.html" style={{ color: 'var(--text-secondary)', textDecoration: 'none', margin: '0 0.5rem' }}>Terms of Condition</a> |
+                <a href="/about.html" style={{ color: 'var(--text-secondary)', textDecoration: 'none', margin: '0 0.5rem' }}>About Us</a>|
+                <a href="/contact.html" style={{ color: 'var(--text-secondary)', textDecoration: 'none', margin: '0 0.5rem' }}>Contact Us</a>
+
                 {/* Add the line break here */}
                 <br />
 
-                © 2025 Cinnamonhouse Villa. All rights reserved.
+                © 2025 BusLK. All rights reserved.
             </footer>
         </div>
     );
