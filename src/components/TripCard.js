@@ -5,16 +5,6 @@ export default function TripCard({ trip, onSelect }) {
                 <h3 style={{ fontSize: '1.25rem', color: 'var(--primary-color)' }}>
                     {trip.startLocation} <span style={{ color: 'var(--text-secondary)', margin: '0 0.5rem' }}>→</span> {trip.endLocation}
                 </h3>
-                <span style={{
-                    backgroundColor: trip.highway ? '#dcfce7' : '#f1f5f9',
-                    color: trip.highway ? '#166534' : '#475569',
-                    padding: '0.25rem 0.75rem',
-                    borderRadius: '9999px',
-                    fontSize: '0.875rem',
-                    fontWeight: '500'
-                }}>
-                    {trip.highway ? "Highway" : "Normal"}
-                </span>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>

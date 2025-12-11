@@ -1,7 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { supabase } from '../supabaseClient';
 
 export default function TripDetailsModal({ trip, onClose }) {
+    const [feedbackUseful, setFeedbackUseful] = useState(null); // true / false
+    const [comment, setComment] = useState('');
+    const [submitting, setSubmitting] = useState(false);
+    const [feedbackMessage, setFeedbackMessage] = useState(null);
+
     if (!trip) return null;
+
+    const handleSubmitFeedback = async () => {
+        if (feedbackUseful === null) {
+            setFeedbackMessage('Please select Yes or No first.');
+            return;
+        }
+
+        try {
+            setSubmitting(true);
+            setFeedbackMessage(null);
+
+            const { error } = await supabase
+                .from('trip_feedback')
+                .insert([
+                    {
+                        trip_id: trip.id,
+                        useful: feedbackUseful,
+                        comment: comment || null,
+                    },
+                ]);
+
+            if (error) {
+                console.error(error);
+                setFeedbackMessage('Could not save your feedback. Please try again.');
+                return;
+            }
+
+            setFeedbackMessage('Thank you for your feedback!');
+            setComment('');
+        } catch (err) {
+            console.error(err);
+            setFeedbackMessage('Something went wrong. Please try again.');
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     return (
         <div className="modal-overlay" onClick={onClose}>
@@ -71,6 +113,14 @@ export default function TripDetailsModal({ trip, onClose }) {
                                 <span className="label">Ticket Price:</span>
                                 <span className="value highlight">{trip.price ? `LKR ${trip.price}` : "N/A"}</span>
                             </div>
+                            {trip.stops && trip.stops.length > 0 && (
+                                <div className="detail-item detail-full-width">
+                                    <span className="label">Stops :</span>
+                                    <span className="value">
+                                        {trip.stops.join(', ')}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -91,6 +141,56 @@ export default function TripDetailsModal({ trip, onClose }) {
                             <p className="notes-text">{trip.notes}</p>
                         </div>
                     )}
+
+                    <div className="detail-section">
+                        <h3>Feedback</h3>
+                        <p style={{ marginBottom: '0.5rem', fontWeight: 500 }}>
+                            Was this information useful?
+                        </p>
+
+                        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                            <button
+                                type="button"
+                                onClick={() => setFeedbackUseful(true)}
+                                disabled={submitting}
+                                className={feedbackUseful === true ? 'btn btn-primary' : 'btn btn-outline'}
+                            >
+                                👍 Yes
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setFeedbackUseful(false)}
+                                disabled={submitting}
+                                className={feedbackUseful === false ? 'btn btn-primary' : 'btn btn-outline'}
+                            >
+                                👎 No
+                            </button>
+                        </div>
+
+                        <textarea
+                            placeholder="Optional: tell us why..."
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            rows={3}
+                            style={{ width: '100%', marginBottom: '0.5rem' }}
+                            disabled={submitting}
+                        />
+
+                        <button
+                            type="button"
+                            onClick={handleSubmitFeedback}
+                            disabled={submitting}
+                            className="btn btn-secondary"
+                        >
+                            {submitting ? 'Sending...' : 'Submit feedback'}
+                        </button>
+
+                        {feedbackMessage && (
+                            <div style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
+                                {feedbackMessage}
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 <div className="modal-footer">
